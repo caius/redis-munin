@@ -23,10 +23,10 @@ else
   Resque.queues.each do |q|
     name = q.gsub(":", "_")
 
-    pushed = Resque.redis.get("resque:stat:#{q}:pushed") || 0
+    pushed = Resque::Stat.get("#{q}:pushed")
     puts "#{name}_pushed.value #{pushed}"
 
-    finished = Resque.redis.get("resque:stat:#{q}:finished") || 0
+    finished = Resque::Stat.get("#{q}:finished")
     puts "#{name}_finished.value #{finished}"
   end
 
