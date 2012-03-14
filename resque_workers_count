@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+gem "resque", ">= 1.19.0"
+require "resque"
+
+Resque.redis = Redis.new(ENV["redis"]) if ENV["redis"]
+
+if ARGV.any? { |a| a =~ /config/ }
+  puts "graph_title Resque Workers Count"
+  puts "graph_category Resque"
+  puts "graph_info This graph shows number of resque workers"
+  puts "graph_args --lower-limit 0"
+  puts 'graph_vlabel workers'
+
+  puts 'workers_count.label No. of workers'
+  puts 'workers_count.type COUNTER'
+
+else
+  puts "workers_count.value #{Resque.info[:workers]}"
+
+end

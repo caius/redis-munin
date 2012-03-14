@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+gem "resque", ">= 1.19.0"
+require "resque"
+
+Resque.redis = Redis.new(ENV["redis"]) if ENV["redis"]
+
+if ARGV.any? { |a| a =~ /config/ }
+  puts "graph_title Resque queue rates"
+  puts "graph_category Resque"
+  puts "graph_vlabel queue rates/s"
+  puts "graph_info This graph monitors the in and out rate of the queues"
+  puts "graph_args --lower-limit 0"
+
+  Resque.queues.each do |q|
+    name = q.gsub(":", "_")
+
+    puts "#{name}_pushed.label #{name}_pushed"
+    puts "#{name}_pushed.type COUNTER"
+
+    puts "#{name}_finished.label #{name}_finished"
+    puts "#{name}_finished.type COUNTER"
+  end
+
+else
+  Resque.queues.each do |q|
+    name = q.gsub(":", "_")
+
+    pushed = Resque.redis.get("resque:stat:#{q}:pushed") || 0
+    puts "#{name}_pushed.value #{pushed}"
+
+    finished = Resque.redis.get("resque:stat:#{q}:finished") || 0
+    puts "#{name}_finished.value #{finished}"
+  end
+
+end

@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+gem "resque", "1.19.0"
+require "resque"
+
+Resque.redis = Redis.new(ENV["redis"]) if ENV["redis"]
+
+if ARGV.any? { |a| a =~ /config/ }
+  puts "graph_title Resque Failure rate"
+  puts "graph_category Resque"
+  puts "graph_info This graph shows resque jobs that failed"
+  puts "graph_args --lower-limit 0"
+  puts 'graph_vlabel fails/s'
+
+  puts 'failed.label Failed per/s'
+  puts 'failed.type COUNTER'
+
+else
+  puts "failed.value #{Resque.info[:failed]}"
+
+end

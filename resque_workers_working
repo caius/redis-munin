@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+gem "resque", ">= 1.19.0"
+require "resque"
+
+Resque.redis = Redis.new(ENV["redis"]) if ENV["redis"]
+
+if ARGV.any? { |a| a =~ /config/ }
+  puts "graph_title Resque Workers in use"
+  puts "graph_category Resque"
+  puts "graph_info This graph shows the %age of resque workers busy"
+  puts "graph_args --lower-limit 0 --upper-limit 100"
+  puts 'graph_vlabel %'
+
+  puts 'workers_working.label Workers Busy'
+  puts 'workers_working.type GAUGE'
+
+else
+  info = Resque.info
+  value = 0 if info[:workers] == 0
+  value ||= (info[:working] * 100) / info[:workers]
+  puts "workers_working.value #{value}"
+
+end
