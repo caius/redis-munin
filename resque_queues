@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require File.expand_path("resque_setup", File.dirname(__FILE__))
+require File.expand_path("setup_resque", File.dirname(__FILE__))
 
 if ARGV.any? { |a| a =~ /config/ }
   puts "graph_title Resque queue rates"
