@@ -6,11 +6,11 @@ if ARGV.any? { |a| a =~ /config/ }
   puts "graph_title Resque Workers Count"
   puts "graph_category Resque"
   puts "graph_info This graph shows number of resque workers"
-  puts "graph_args --lower-limit 0"
+  puts "graph_args --base 1000 -l 0"
+  puts "graph_scale no"
   puts 'graph_vlabel workers'
 
   puts 'workers_count.label No. of workers'
-  puts 'workers_count.type COUNTER'
 
 else
   puts "workers_count.value #{Resque.info[:workers]}"
