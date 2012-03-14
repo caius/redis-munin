@@ -6,7 +6,7 @@ if ARGV.any? { |a| a =~ /config/ }
   puts "graph_title Resque Failure rate"
   puts "graph_category Resque"
   puts "graph_info This graph shows resque jobs that failed"
-  puts "graph_args --base 1000 -l 0'"
+  puts "graph_args --base 1000 -l 0"
   puts "graph_scale no"
   puts 'graph_vlabel fails/s'
 
