@@ -1,10 +1,5 @@
 #!/usr/bin/env ruby
-
-require "rubygems"
-gem "resque", "1.19.0"
-require "resque"
-
-Resque.redis = Redis.new(ENV["redis"]) if ENV["redis"]
+require File.expand_path("resque_setup", File.dirname(__FILE__))
 
 if ARGV.any? { |a| a =~ /config/ }
   puts "graph_title Resque queue rates"
