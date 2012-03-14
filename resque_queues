@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
-gem "resque", ">= 1.19.0"
+
+require "rubygems"
+gem "resque", "1.19.0"
 require "resque"
 
 Resque.redis = Redis.new(ENV["redis"]) if ENV["redis"]
