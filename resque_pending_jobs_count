@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+require "pathname"
+require Pathname.new(__FILE__).realpath.dirname + "setup_resque"
+
+if ARGV.any? { |a| a =~ /config/ }
+  puts "graph_title Resque Pending Jobs Count"
+  puts "graph_category Resque"
+  puts "graph_info This graph shows number of pending jobs"
+  puts "graph_args --base 1000 -l 0"
+  puts 'graph_vlabel jobs'
+
+  puts 'pending_jobs_count.label No. of pending jobs'
+  puts 'pending_jobs_count.draw AREA'
+else
+  puts "pending_jobs_count.value #{Resque.info[:pending]}"
+
+end

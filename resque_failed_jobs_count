@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+require "pathname"
+require Pathname.new(__FILE__).realpath.dirname + "setup_resque"
+
+if ARGV.any? { |a| a =~ /config/ }
+  puts "graph_title Resque Failed Jobs Count"
+  puts "graph_category Resque"
+  puts "graph_info This graph shows number of failed jobs"
+  puts "graph_args --base 1000 -l 0"
+  puts 'graph_vlabel jobs'
+
+  puts 'failed_jobs_count.label No. of failed jobs'
+  puts 'failed_jobs_count.draw AREA'
+else
+  puts "failed_jobs_count.value #{Resque.info[:failed]}"
+
+end
